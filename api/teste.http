@@ -1,0 +1,10 @@
+GET http://localhost:8090
+Host: localhost:8080
+Content-Type: application/json
+
+#############
+
+GET http://localhost:8090
+Host: localhost:8080
+Content-Type: application/json
+API_KEY: teste
