@@ -26,6 +26,6 @@ COPY --from=builder /app/rate_limiter .
 RUN chmod +x rate_limiter
 
 # Porta exposta e comando padrão
-EXPOSE 8090
+EXPOSE 8080
 CMD ["./rate_limiter"]
 

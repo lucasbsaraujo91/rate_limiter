@@ -5,18 +5,17 @@ import (
 	"net/http"
 	"os"
 	"rate_limiter/middleware"
+	redisstorage "rate_limiter/storage"
 
 	"github.com/go-redis/redis/v8"
 	"github.com/joho/godotenv"
 )
 
 func main() {
-	// Carregar variáveis de ambiente
 	if err := godotenv.Load(); err != nil {
 		log.Println("Arquivo .env não encontrado, usando variáveis de ambiente padrão.")
 	}
 
-	// Conexão com Redis
 	redisClient := redis.NewClient(&redis.Options{
 		Addr:     os.Getenv("REDIS_HOST"),
 		Password: os.Getenv("REDIS_PASSWORD"),
@@ -24,14 +23,13 @@ func main() {
 	})
 	defer redisClient.Close()
 
-	// Middleware de Rate Limiter
-	limiter := middleware.NewRateLimiter(redisClient)
+	redisStorage := redisstorage.NewRedisStorage(redisClient)
+	limiter := middleware.NewRateLimiter(*redisStorage)
 
-	// Servidor HTTP
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("Requisição bem-sucedida!"))
 	})
 
-	log.Println("Servidor iniciado na porta 8090.")
-	log.Fatal(http.ListenAndServe(":8090", limiter.Middleware(http.DefaultServeMux)))
+	log.Println("Servidor iniciado na porta 8080.")
+	log.Fatal(http.ListenAndServe(":8080", limiter.Middleware(http.DefaultServeMux)))
 }
