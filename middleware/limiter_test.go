@@ -6,6 +6,8 @@ import (
 	"os"
 	"rate_limiter/middleware"
 	redisstorage "rate_limiter/storage"
+
+	// Corrigido para o nome correto do pacote
 	"testing"
 	"time"
 
@@ -28,8 +30,8 @@ func TestRateLimiterMiddleware(t *testing.T) {
 	redisClient := setupRedis()
 	defer redisClient.Close()
 
-	storage := redisstorage.NewRedisStorage(redisClient)
-	limiter := middleware.NewRateLimiter(*storage)
+	storage := redisstorage.NewRedisStorage(redisClient) // Usando o pacote correto
+	limiter := middleware.NewRateLimiter(storage)
 
 	testHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("Success"))
@@ -88,8 +90,8 @@ func TestRateLimiterMiddleware(t *testing.T) {
 func TestGetKey(t *testing.T) {
 	redisClient := setupRedis()
 	defer redisClient.Close()
-	storage := redisstorage.NewRedisStorage(redisClient)
-	limiter := middleware.NewRateLimiter(*storage)
+	storage := redisstorage.NewRedisStorage(redisClient) // Usando o pacote correto
+	limiter := middleware.NewRateLimiter(storage)
 
 	t.Run("Key with token", func(t *testing.T) {
 		token := "abc123"
@@ -113,8 +115,8 @@ func TestGetLimits(t *testing.T) {
 	redisClient := setupRedis()
 	defer redisClient.Close()
 
-	storage := redisstorage.NewRedisStorage(redisClient)
-	limiter := middleware.NewRateLimiter(*storage)
+	storage := redisstorage.NewRedisStorage(redisClient) // Usando o pacote correto
+	limiter := middleware.NewRateLimiter(storage)
 
 	t.Run("Default limits", func(t *testing.T) {
 		limit, ttl := limiter.GetLimits("", "")

@@ -23,8 +23,8 @@ func main() {
 	})
 	defer redisClient.Close()
 
-	redisStorage := redisstorage.NewRedisStorage(redisClient)
-	limiter := middleware.NewRateLimiter(*redisStorage)
+	redisStorage := redisstorage.NewRedisStorage(redisClient) // Passando o ponteiro corretamente
+	limiter := middleware.NewRateLimiter(redisStorage)        // Passando o ponteiro
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("Requisição bem-sucedida!"))

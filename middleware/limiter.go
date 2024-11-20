@@ -11,10 +11,10 @@ import (
 )
 
 type RateLimiter struct {
-	storage redisstorage.RedisStorage
+	storage redisstorage.Storage
 }
 
-func NewRateLimiter(storage redisstorage.RedisStorage) *RateLimiter {
+func NewRateLimiter(storage redisstorage.Storage) *RateLimiter {
 	return &RateLimiter{storage: storage}
 }
 
